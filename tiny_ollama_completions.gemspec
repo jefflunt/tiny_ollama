@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = "tiny_ollama_completions"
-  s.version     = "1.0.0"
+  s.version     = "1.1.0"
   s.description = "a tiny gem for invoking ollama's /api/generate' endpoint"
   s.summary     = "a tiny gem for invoking ollama's /api/generate' endpoint"
   s.authors     = ["Jeff Lunt"]

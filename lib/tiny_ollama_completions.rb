@@ -3,10 +3,12 @@ require 'json'
 
 # tiny HTTP client for the non-streaming POST /api/generate endpoint for ollama
 class TinyOllamaCompletion
-  def initialize(model:, host: 'localhost', port: 11434)
+  def initialize(model:, host: 'localhost', port: 11434, context_size: 2048, keep_alive: -1)
     @model = model
     @host = host
     @port = port
+    @context_size = context_size
+    @keep_alive = keep_alive
   end
 
   def prompt(user_prompt)
@@ -15,7 +17,11 @@ class TinyOllamaCompletion
     request_body = {
       model: @model,
       prompt: user_prompt,
-      stream: false
+      stream: false,
+      keep_alive: @keep_alive,
+      options: {
+        num_ctx: @context_size,
+      },
     }.to_json
 
     headers = { 'Content-Type' => 'application/json' }
