@@ -91,11 +91,11 @@ class TinyOllama
 
     # Handle potential errors (e.g., non-200 responses)
     unless response.is_a?(Net::HTTPSuccess)
-      raise TinyOllamaModelError.new("Ollama API Error: #{response.code} - #{response.body}")
+      raise TinyOllamaModelError, "Ollama API Error: #{response.code} - #{response.body}"
     end
 
     JSON.parse(response.body)['message']['content']
   end
 end
 
-class TinyOllamaModelError; end
+class TinyOllamaModelError < StandardError; end
