@@ -25,30 +25,6 @@ class TinyOllama
     @format = format
   end
 
-  # sends a request to POST /api/generate
-  def generate(prompt)
-    request_body = {
-      model: @model,
-      prompt: prompt,
-      stream: @stream,
-      keep_alive: @keep_alive,
-      options: {
-        num_ctx: @context_size,
-      }.merge(@format ? { format: @format } : {})
-    }.to_json
-
-    uri = URI("http://#{@host}:#{@port}/api/generate")
-    headers = { 'Content-Type' => 'application/json' }
-    response = Net::HTTP.post(uri, request_body, headers)
-
-    # Handle potential errors (e.g., non-200 responses)
-    unless response.is_a?(Net::HTTPSuccess)
-      raise TinyOllamaModelError.new("Ollama API Error: #{response.code} - #{response.body}")
-    end
-
-    JSON.parse(response.body)['response']
-  end
-
   # sends a request to POST /api/chat
   #
   # messages: an array of hashes in the following format:
@@ -73,7 +49,7 @@ class TinyOllama
   #
   # NOTE: the messages parameter needs to include a system message if you want
   # to override the model's default instructions
-  def chat(messages)
+  def prompt(messages)
     request_body = {
       model: @model,
       messages: messages,
